@@ -16,14 +16,21 @@ body{
 
 .page{
 	margin: 4em auto 3em auto;
-	height: 11in;
-	width: 8.5in;
+	height: 8.5in;
+	width: 11in;
 	background-color: white;
 }
 
 .imageDiv{
-	display: inline-block;
+	position: absolute;
 }
 
-#image{
+.image{
+	position: absolute;
+	width: 20%;
+}
+
+a{
+	text-decoration: none;
+	color: white;
 }
