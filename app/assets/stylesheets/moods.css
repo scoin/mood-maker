@@ -1,0 +1,29 @@
+body{
+	background-color: gray;
+}
+
+#container{
+}
+
+#menubar{
+	background-color: blue;
+	position: fixed;
+	height: 3em;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
+}
+
+.page{
+	margin: 4em auto 3em auto;
+	height: 11in;
+	width: 8.5in;
+	background-color: white;
+}
+
+.imageDiv{
+	display: inline-block;
+}
+
+#image{
+}
