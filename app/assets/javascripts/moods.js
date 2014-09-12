@@ -43,19 +43,16 @@ function initImage(){
 }
 
 function initText(){
-	$(".textDiv").draggable({ containment: ".page", scroll: true });
-	$('.pageText').resizable({containment: ".page", 
-					        create: function(event, ui) {
-					            initDiagonal = getContentDiagonal();
-					            initFontSize = parseInt($(".pageText").css("font-size"));
-					        },
-					        resize: function(e, ui) {
-					            var newDiagonal = getContentDiagonal();
-					            var ratio = newDiagonal / initDiagonal;
-					            $(".pageText").css("font-size", initFontSize + ratio * 2);
-					            $('#fontsize').val($(".pageText").css("font-size"));
-					        }
-						});
+	$(".textDiv").draggable({ containment: ".page", 
+							  scroll: true,
+								start: function(event, ui){
+									selectText(ui.helper[0]);
+								},
+								stop: function(event, ui){
+									selectText(ui.helper[0]);
+								} 
+							});
+	$('.pageText').resizable({containment: ".page", scroll: true});
 }
 
 function escapeSelected(){
@@ -93,6 +90,7 @@ function selectText(that){
 	$('#z-index').val($(that).zIndex());
 	$('#edittext').val($(that).text());
 	$('#fontsize').val($(that).children().css('font-size'));
+	$('#font').val($(that).children().css('font-family'));
 	$('.selected').removeClass('selected');
 	$(selected.obj).addClass("selected");
 	hideMenus();
