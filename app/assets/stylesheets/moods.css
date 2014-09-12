@@ -31,6 +31,19 @@ body{
 	width: 400px;
 }
 
+.textDiv{
+	position: absolute;
+	display: inline-block;
+	margin: 0;
+}
+
+.pageText{
+	position: absolute;
+	text-align: center;
+	font-size: 16;
+	overflow: visible;
+}
+
 a{
 	text-decoration: none;
 	color: white;

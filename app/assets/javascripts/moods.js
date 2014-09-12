@@ -12,7 +12,7 @@ var selected = {obj: undefined,
 				}
 				};
 
-function initUI(){
+function initImage(){
 	$(".imageDiv").draggable({ containment: ".page", scroll: true });
 	$('.image').resizable({containment: ".page", 
 							aspectRatio: true,
@@ -20,6 +20,23 @@ function initUI(){
 								$('#width').val($(this).width());
 								$('#height').val($(this).height());
 							}
+						});
+}
+
+function initText(){
+	$(".textDiv").draggable({ containment: ".page", scroll: true });
+	$('.pageText').resizable({containment: ".page", 
+					        create: function(event, ui) {
+					            initDiagonal = getContentDiagonal();
+					            initFontSize = parseInt($(".pageText").css("font-size"));
+					        },
+					        resize: function(e, ui) {
+					            var newDiagonal = getContentDiagonal();
+					            var ratio = newDiagonal / initDiagonal;
+					            $(".pageText").css("font-size", initFontSize + ratio * 2);
+					            $('#width').val($(this).width());
+								$('#height').val($(this).height());
+					        }
 						});
 }
 
@@ -49,6 +66,10 @@ function getSelected(){
 	$('.page').on('click', '.imageDiv', function(){
 		setSelected(this);
 	})
+
+	$('.page').on('click', '.textDiv', function(){
+		setSelected(this);
+	})
 }
 
 function setZIndex(){
@@ -73,9 +94,15 @@ function setHeight(newHeight){
 	$('#height').val($(selected.obj).height());
 }
 
+function getContentDiagonal() {
+    var contentWidth = $(".pageText").width();
+    var contentHeight = $(".pageText").height();
+    return contentWidth * contentWidth + contentHeight * contentHeight;
+}
+
 $(document).ready(function(){
 
-	initUI();
+	initImage();
 
 	escapeSelected();
 
@@ -91,12 +118,17 @@ $(document).ready(function(){
 		})
 			.done(function(data){
 				$('.page').append("<div class='imageDiv'><img src='" + image + "' class='image'></div>");
-				initUI();
+				initImage();
 			});
 	});
 
-
-
+	$('#addText').submit(function(e){
+		e.preventDefault();
+		text = $('#text').val();
+		$('#text').val('');
+		$('.page').append("<div class='textDiv'><div class='pageText'>" + text + "</div></div>");
+		initText();
+	})
 
 
 	$('#width').keyup(function(k){
