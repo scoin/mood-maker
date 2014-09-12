@@ -12,13 +12,32 @@ var selected = {obj: undefined,
 				}
 				};
 
+function hideMenus(){
+	$('.imageOptions').hide();
+	$('.textOptions').hide();
+}
+
 function initImage(){
-	$(".imageDiv").draggable({ containment: ".page", scroll: true });
+	$(".imageDiv").draggable({ containment: ".page", 
+								scroll: true,
+								start: function(event, ui){
+									selectImage(ui.helper[0]);
+								},
+								stop: function(event, ui){
+									selectImage(ui.helper[0]);
+								}
+							});
 	$('.image').resizable({containment: ".page", 
 							aspectRatio: true,
+							start: function(event, ui){
+								selectImage(ui.element['0']);
+							},
 							resize: function(event, ui){
 								$('#width').val($(this).width());
 								$('#height').val($(this).height());
+							},
+							stop: function(event, ui){
+								selectImage(ui.element['0']);
 							}
 						});
 }
@@ -47,12 +66,13 @@ function escapeSelected(){
 			$('#z-index').val('');
 			$('#width').val('');
 			$('#height').val('');
-
+			$('.selected').removeClass('selected');
+			hideMenus();
 		}
 	})
 }
 
-function setSelected(that){
+function selectImage(that){
 	selected.obj = that;
 	selected.w = $(that).width();
 	selected.h = $(that).height();
@@ -60,15 +80,32 @@ function setSelected(that){
 	$('#z-index').val($(that).zIndex());
 	$('#width').val($(that).width());
 	$('#height').val($(that).height());
+	$('.selected').removeClass('selected');
+	$(selected.obj).addClass("selected");
+	hideMenus();
+	$('.imageOptions').show();
+}
+
+function selectText(that){
+	selected.obj = that;
+	selected.w = $(that).width();
+	selected.h = $(that).height();
+
+	$('#z-index').val($(that).zIndex());
+	$('#edittext').val($(that).text());
+	$('.selected').removeClass('selected');
+	$(selected.obj).addClass("selected");
+	hideMenus();
+	$('.textOptions').show();
 }
 
 function getSelected(){
 	$('.page').on('click', '.imageDiv', function(){
-		setSelected(this);
+		selectImage(this);
 	})
 
 	$('.page').on('click', '.textDiv', function(){
-		setSelected(this);
+		selectText(this);
 	})
 }
 
@@ -104,6 +141,8 @@ $(document).ready(function(){
 
 	initImage();
 
+	hideMenus();
+
 	escapeSelected();
 
 	getSelected();
@@ -126,8 +165,14 @@ $(document).ready(function(){
 		e.preventDefault();
 		text = $('#text').val();
 		$('#text').val('');
-		$('.page').append("<div class='textDiv'><div class='pageText'>" + text + "</div></div>");
+		$('.page').append("<div class='textDiv'><div class='pageText'><p>" + text + "</p></div></div>");
 		initText();
+	})
+
+	$('#edittext').keyup(function(k){
+		if(k.keyCode != 8){
+			$(selected.obj).find($('p')).text($('#edittext').val());
+		}
 	})
 
 

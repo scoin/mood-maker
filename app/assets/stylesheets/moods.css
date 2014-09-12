@@ -39,7 +39,7 @@ body{
 
 .pageText{
 	position: absolute;
-	text-align: center;
+	text-align: left;
 	font-size: 16;
 	overflow: visible;
 }
@@ -53,5 +53,9 @@ li{
 	color: white;
 	float: left;
 	margin-left: 4em;
+}
+
+.selected{
+    border: 2px solid gray;
 }
 
