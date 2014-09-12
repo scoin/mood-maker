@@ -53,8 +53,7 @@ function initText(){
 					            var newDiagonal = getContentDiagonal();
 					            var ratio = newDiagonal / initDiagonal;
 					            $(".pageText").css("font-size", initFontSize + ratio * 2);
-					            $('#width').val($(this).width());
-								$('#height').val($(this).height());
+					            $('#fontsize').val($(".pageText").css("font-size"));
 					        }
 						});
 }
@@ -93,6 +92,7 @@ function selectText(that){
 
 	$('#z-index').val($(that).zIndex());
 	$('#edittext').val($(that).text());
+	$('#fontsize').val($(that).children().css('font-size'));
 	$('.selected').removeClass('selected');
 	$(selected.obj).addClass("selected");
 	hideMenus();
@@ -172,6 +172,11 @@ $(document).ready(function(){
 	$('#edittext').keyup(function(k){
 		if(k.keyCode != 8){
 			$(selected.obj).find($('p')).text($('#edittext').val());
+		}
+	})
+	$('#fontsize').keyup(function(k){
+		if(k.keyCode != 8){
+			$(selected.obj).find($('.pageText')).css('font-size', $('#fontsize').val());
 		}
 	})
 
